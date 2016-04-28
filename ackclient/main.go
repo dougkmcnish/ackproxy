@@ -14,22 +14,26 @@ import (
 var queue []response.Ack
 
 var akey string = os.Getenv("NAGIOS_API_KEY")
+var host string = os.Getenv("NAGIOS_API_HOST")
 
 func main() {
+
+	if host == "" {
+		log.Fatal("Specify a host.")
+	}
 
 	if len(akey) < 30 {
 		log.Fatal("Must set NAGIOS_API_KEY to something pretty secure")
 	}
 
-	res, err := http.Get("http://127.0.0.1:8080/dequeue?k=" + akey)
+	res, err := http.Get("http://" + host + "/dequeue?k=" + akey)
 
 	if err != nil {
 		log.Fatalf("Connection error %s", err)
 	}
 
-	defer res.Body.Close()
-
 	body, err := ioutil.ReadAll(res.Body)
+	defer res.Body.Close()
 
 	if err != nil {
 		log.Fatalf("Read Error: %s", err)
