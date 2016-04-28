@@ -50,7 +50,6 @@ func ackhandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	queue = append(queue, a)
-	log.Printf("In ackhandler queue(%p) = %d", &queue, cap(queue))
 
 	fmt.Fprintf(w, "Success, %d commands queued.", len(queue))
 
@@ -66,8 +65,6 @@ func dequeue(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "%s", j)
 		queue = nil
 	}
-	log.Printf("In dequeue queue(%p) = %d", &queue, cap(queue))
-
 }
 
 func main() {
@@ -79,7 +76,6 @@ func main() {
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		log.Println(r.URL.Path)
 		http.Error(w, "nope", http.StatusForbidden)
 	})
 	http.HandleFunc("/stats", Auth(stats))
