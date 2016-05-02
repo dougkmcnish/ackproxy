@@ -25,7 +25,7 @@ func main() {
 		log.Fatal("Must set NAGIOS_API_KEY to something pretty secure")
 	}
 
-	res, err := http.Get("http://" + host + "/dequeue?k=" + akey)
+	res, err := http.Get(host + "/dequeue?k=" + akey)
 
 	if err != nil {
 		log.Fatalf("Connection error %s", err)
