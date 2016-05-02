@@ -5,4 +5,5 @@ type Ack struct {
 	Key     string
 	Host    string
 	Service string
+	Date    int64
 }

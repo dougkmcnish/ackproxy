@@ -6,7 +6,9 @@ import (
 	"github.com/easy-bot/ackproxy/response"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
+	"time"
 )
 
 var queue []response.Ack
@@ -41,7 +43,13 @@ func ackhandler(w http.ResponseWriter, r *http.Request) {
 	a.User = r.URL.Query().Get("u")
 	a.Key = r.URL.Query().Get("k")
 	a.Host = r.URL.Query().Get("h")
-	a.Service = r.URL.Query().Get("s")
+	a.Date = time.Now().Unix()
+
+	//service names are urlencoded because they can contain spaces
+	if r.URL.Query().Get("s") != "" {
+		u := &url.URL{Path: r.URL.Query().Get("s")}
+		a.Service = u.Path
+	}
 
 	log.Printf("Ack{User: %s, Key: %s, Host: %s, Service: %s}\n", a.User, a.Key, a.Host, a.Service)
 

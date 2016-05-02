@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 )
 
 var queue []response.Ack
@@ -44,13 +43,11 @@ func main() {
 	if queue != nil {
 		for _, a := range queue {
 
-			time := time.Now().Unix()
-
 			if a.Key == akey {
 				if a.Service == "" {
-					fmt.Printf("[%d] ACKNOWLEDGE_HOST_PROBLEM;%s;2;1;1;%s;Acknowledged using nagproxy.go\n", time, a.Host, a.User)
+					fmt.Printf("[%d] ACKNOWLEDGE_HOST_PROBLEM;%s;2;1;1;%s;Acknowledged using nagproxy.go\n", a.Date, a.Host, a.User)
 				} else {
-					fmt.Printf("[%d] ACKNOWLEDGE_SVC_PROBLEM;%s;%s;2;1;1;%s;Acknowledged using nagproxy.go\n", time, a.Host, a.Service, a.User)
+					fmt.Printf("[%d] ACKNOWLEDGE_SVC_PROBLEM;%s;%s;2;1;1;%s;Acknowledged using nagproxy.go\n", a.Date, a.Host, a.Service, a.User)
 				}
 			}
 
